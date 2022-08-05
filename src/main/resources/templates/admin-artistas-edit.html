@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es" class="h-100" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/jpg" href="/img/favicon.png"/>
+
+	<!--jquery-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!--BootStrap-->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+		crossorigin="anonymous"></script>
+	<!-- 	validate -->
+	<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+	<!-- estilos -->
+	<link rel="stylesheet" href="/css/comun.css">
+	<link rel="stylesheet" href="/css/admin.css">
+	<link rel="stylesheet" href="../static/css/admin.css">
+	<link rel="stylesheet" href="../static/css/comun.css">
+	<!-- js -->
+	<script src="/js/general.js"></script>
+	<!-- <script src="/js/admin.js"></script> -->
+	<script src="js/validaForms.js"></script>
+	<!-- <script src="../static/js/admin.js"></script> -->
+	<script src="../static/js/general.js"></script>
+
+	<title>Edición de artista</title>
+</head>
+
+<body class="d-flex flex-column h-100">
+	<header th:insert="/plantilla::header"></header>
+	<main class="flex-shrink-0 mb-5">
+		<div class="container">
+			<!-- breadcrumb -->
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="index">Inicio</a></li>
+				<li class="breadcrumb-item"><a href="/admin">Panel de administrador</a></li>
+				<li class="breadcrumb-item"><a href="/admin-artistas">Gestión de artistas</a></li>
+				<li class="breadcrumb-item" active aria-current="page">Editar artista</a>
+				</li>
+			</ol>
+			<h1 th:if="${artista.codArtista!=0}" class="mt-2 text-center">Edición de artista</h1>
+			<h1 th:if="${artista.codArtista==0}" class="mt-2 text-center">Nuevo artista</h1>
+
+			<form method="post" th:action="@{/admin-artistas/edit}" enctype="multipart/form-data" th:object="${artista}"
+				id="formEdit" class="mb-5 m-lg-auto">
+				<div class="row ">
+
+					<!-- imagen -->
+					<div class="col-6 d-flex flex-column m-auto">
+						<img th:if="${artista.imagen != null}" th:src="@{${'/img/artistas/' + artista.imagen}}"
+							src="../static/img/usuarios/perfil1.jpg" name="imagen"
+							class="img-fluid rounded-circle m-auto border shadow-sm" alt="imagen de obra">
+						<input type="hidden" th:field="*{imagen}" />
+					</div>
+
+					<fieldset class="row border rounded-3 shadow-sm"
+						th:style="${artista.imagen == null ? 'margin-top:0' : 'margin-top:-21px'}">
+
+						<!-- nombre -->
+						<div class="col-12 col-lg-6 mt-3">
+							<label th:for="'nom'+${artista.codArtista}" class="form-label">Nombre</label>
+							<input type="text" class="form-control" name="nombre" th:field="*{nombre}"
+								th:id="'nom'+${artista.codArtista}" placeholder="Nombre del artista" required/>
+						</div>
+
+						<!-- nacionalidad -->
+						<div class="col-12 col-lg-6 mt-3">
+							<label th:for="'nac'+${artista.codArtista}" class="form-label">Nacionalidad</label>
+							<input type="text" class="form-control" name="nacionalidad" th:field="*{nacionalidad}"
+								th:id="'nac'+${artista.codArtista}" placeholder="Nacionalidad del artista" required/>
+						</div>
+
+						<!-- fecha Nacimiento -->
+						<div class="col-12 col-lg-6 mt-3">
+							<label th:for="'fecnac'+${artista.codArtista}" class="form-label">Fecha nacimiento</label>
+							<input type="number" max="2022"class="form-control" name="fechaNac" th:field="*{fechaNac}"
+								th:id="'fecnac'+${artista.codArtista}" placeholder="Fecha de nacimiento" required/>
+						</div>
+
+						<!-- fecha Muerte -->
+						<div class="col-12 col-lg-6 mt-3">
+							<label th:for="'fecnac'+${artista.codArtista}" class="form-label">Fecha muerte</label>
+							<input type="number" max="2022" class="form-control" name="fechaMuerte" th:field="*{fechaMuerte}"
+								th:id="'fecnac'+${artista.codArtista}" placeholder="Fecha muerte" />
+						</div>
+
+						<!-- corriente -->
+						<div class="col-12 col-lg-6 mt-3">
+							<label th:for="'corr'+${artista.codArtista}" class="form-label">Corriente</label>
+							<select id="corr'+${artista.codArtista}" th:field="*{codCorriente}" class="form-select" required>
+								<option value="0">Seleccione una corriente</option>
+								<option th:each="corriente : ${listaCorrientes}" th:value="${corriente.codCorriente}"
+									th:text="${corriente.nombre}"></option>
+							</select>
+						</div>
+
+						<!-- subir imagen -->
+						<div class="col-12 col-lg-6 mt-3">
+							<label th:for="'img'+${artista.codArtista}" class="form-label p-1 m-0 text-truncate">
+								Imagen
+							</label>
+							<input type="file" class="form-control" name="fileEdit" th:id="'img'+${artista.codArtista}">
+						</div>
+
+						<!-- descripción -->
+						<div class="col-12 mt-3">
+							<label th:for="'desc'+${artista.codArtista}" class="form-label">Descripcion</label>
+							<textarea class="form-control" rows="9" name="descripcion" th:field="*{descripcion}"
+								th:id="'desc'+${artista.codArtista}">
+						</textarea>
+						</div>
+
+						<input type="hidden" th:if="${artista.codArtista!=null}" th:field=*{codArtista} />
+
+						<div class="col-12 col-lg-6 my-3 mx-lg-auto ">
+							<input type="submit" value="Guardar" class="boton w-100" />
+						</div>
+
+
+					</fieldset>
+				</div>
+			</form>
+		</div>
+	</main>
+	<footer class="footer d-sm-flex justify-content-center mt-auto py-3" th:insert="/plantilla::footer"></footer>
+</body>
+
+</html>

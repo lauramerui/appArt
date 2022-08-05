@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es" class="h-100" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/jpg" href="/img/favicon.png"/>
+	
+	<!--BootStrap-->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+		crossorigin="anonymous"></script>
+	<!--jquery-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!-- 	validate -->
+	<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+	<!-- estilos -->
+	<link rel="stylesheet" href="css/comun.css">
+	<link rel="stylesheet" href="css/explorar.css">
+	<link rel="stylesheet" href="../static/css/explorar.css">
+	<link rel="stylesheet" href="../static/css/comun.css">
+	<!-- js -->
+	<script src="js/general.js"></script>
+	<script src="js/explorar.js"></script>
+	<script src="js/validaForms.js"></script>
+	<script src="../static/js/explorar.js"></script>
+
+	<title>Obras | Arty</title>
+</head>
+
+<body class="d-flex flex-column h-100">
+	<header th:insert="/plantilla::header"></header>
+	<main class="flex-shrink-0 mb-5">
+		<div class="container">
+			<!-- breadcrumb -->
+			<ol class="breadcrumb mb-0">
+				<li class="breadcrumb-item"><a href="index">Inicio</a></li>
+				<li class="breadcrumb-item" active aria-current="page">Explorar</a>
+				</li>
+			</ol>
+
+
+			<!-- Barra de búsqueda -->
+			<div class="row">
+				<div class="col col-xl-6  offset-lg-3 offset-xxl-2">
+					<!-- <div class="col-lg-9 col-xxl-10 col-xl-9"> -->
+					<h1 class="text-center text-lg-start">Explorar obras</h1>
+					<div class="input-group barra-busqueda">
+						<input type="search" class="form-control form-control-dark"
+							placeholder="Busca por título, autor, técnica, ubicación o fecha." id="input-buscar"
+							aria-label="Buscar obra">
+						<button class="btn btn-outline-secondary bg-gradient" type="button" id="boton-busqueda">
+							<i class="bi bi-search"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- filtros + obras -->
+			<div class="row d-lg-flex">
+				<!-- filtros -->
+				<div class="col-lg-3 col-xxl-2 mt-lg-3">
+					<!-- categorias -->
+					<button type="button" class="btn btn-categorias bg-gradient w-100 mt-3 mt-lg-0 d-lg-block"
+						id="boton-categorias">Buscar
+						por categorías</button>
+					<div class="d-lg-flex" id="categorias">
+						<ul class="w-100 list-group" aria-labelledby="boton-categorias">
+							<li class="list-group-item">
+								<a class="d-block text-decoration-none text-black"
+									href="explorar-artistas">Artistas</a>
+							</li>
+							<li class="list-group-item border-bot">
+								<a class="d-block text-decoration-none text-black"
+									href="explorar-corrientes">Corrientes artísticas</a>
+							</li>
+						</ul>
+					</div>
+
+					<!-- filtros -->
+					<button type="button" class="btn btn-filtrar bg-gradient w-100 mt-3">Filtrar obras</button>
+					<div id="filtros" class="">
+						<form action="">
+							<div class="accordion" id="panelFiltros">
+								<!-- orden -->
+								<div class="accordion-item">
+									<h2 class="accordion-header" id="panelFiltros-orden-header">
+										<button class="accordion-button collapsed" type="button"
+											data-bs-toggle="collapse" data-bs-target="#panelFiltros-orden"
+											aria-expanded="true" aria-controls="panelFiltros-orden">Ordenar</button>
+									</h2>
+
+									<div id="panelFiltros-orden" class="accordion-collapse collapse"
+										aria-labelledby="panelFiltros-orden-header">
+										<div class="accordion-body">
+											<div class="form-check">
+												<input class="form-check-input" type="radio" name="orden" id="ordendesc"
+													value="desc">
+												<label class="form-check-label" for="ordendesc">
+													Cronológico desc</label>
+											</div>
+											<div class="form-check">
+												<input class="form-check-input" type="radio" name="orden" id="ordenasc"
+													value="asc"> <label class="form-check-label" for="ordenasc">
+													Cronológico asc</label>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- época -->
+								<div class="accordion-item">
+									<h2 class="accordion-header" id="panelFiltros-epoca-header">
+										<button class="accordion-button collapsed" type="button"
+											data-bs-toggle="collapse" data-bs-target="#panelFiltros-epoca"
+											aria-expanded="true" aria-controls="panelFiltros-epoca">Época</button>
+									</h2>
+
+									<div id="panelFiltros-epoca" class="accordion-collapse collapse"
+										aria-labelledby="panelFiltros-epoca-header">
+										<div class="accordion-body d-flex pe-0">
+
+											<div class="slider-wrapper">
+												<label for="sigloRange" class="form-label w-100">Siglo <span
+														id="epoca-span">-</span></label>
+												<input type="range" class="form-range" min="12" max="21" value="12"
+													step="1" id="sigloRange" onchange="filtroSiglo()">
+
+											</div>
+											<button type="button" class="btn p-1 align-self-end"
+												aria-label="borrar filtro por siglos" onclick="resetSiglo()"><i
+													class="bi bi-x"></i>
+											</button>
+
+										</div>
+									</div>
+								</div>
+
+								<!-- técnicas -->
+								<div class="accordion-item">
+									<h2 class="accordion-header" id="panelFiltros-tecnicas-header">
+										<button class="accordion-button collapsed" type="button"
+											data-bs-toggle="collapse" data-bs-target="#panelFiltros-tecnicas"
+											aria-expanded="true" aria-controls="panelFiltros-tecnicas">Técnica</button>
+									</h2>
+									<div id="panelFiltros-tecnicas" class="accordion-collapse collapse"
+										aria-labelledby="panelFiltros-tecnicas-header">
+										<div class="accordion-body p-0">
+
+											<ul class="list-group w-100">
+												<li class="list-group-item border-start-0 border-end-0 p-0"
+													th:each="tecnica : ${listaTecnicas}">
+													<input type="checkbox" class="btn-check radio-tecnica"
+														name="tecnica" th:id="${tecnica}" id="tecnica"
+														th:attr="value = ${tecnica}" value="oleo">
+													<label th:for="${tecnica}" for="tecnica" th:text="${tecnica}"
+														class="btn  w-100 text-start">
+														Técnica artística
+													</label>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+
+								<!-- museos -->
+								<div class="accordion-item">
+									<h2 class="accordion-header" id="panelFiltros-museos-header">
+										<button class="accordion-button collapsed" type="button"
+											data-bs-toggle="collapse" data-bs-target="#panelFiltros-museos"
+											aria-expanded="true" aria-controls="panelFiltros-museos">Museos</button>
+									</h2>
+									<div id="panelFiltros-museos" class="accordion-collapse collapse"
+										aria-labelledby="panelFiltros-museos-header">
+										<div class="accordion-body p-0">
+
+											<ul class="list-group w-100">
+												<li class="list-group-item border-start-0 border-end-0 p-0"
+													th:each="ubicacion : ${listaUbic}">
+													<input type="checkbox" class="btn-check radio-ubicacion"
+														name="museo" th:id="${ubicacion}"
+														th:attr="value = ${ubicacion}">
+													<label th:for="${ubicacion}" for="" th:text="${ubicacion}"
+														class="btn w-100 text-start">
+														Ubicación
+													</label>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+
+				<!-- OBRAS -->
+				<div class="col-lg div-obras">
+					<div class="container-cards row row-cols-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5 g-3 mt-3"
+						id="listaObras">
+						<div class="col col-obra" th:each="obra : ${listaObras}" th:data-titulo="${obra.titulo}"
+							th:data-tecnica="${obra.tecnica}" th:data-ubicacion="${obra.ubicacion}"
+							th:data-fecha="${obra.fecha}">
+							<div class="card bg-dark text-white card-obra">
+								<form action="obra" class="d-flex justify-content-center align-items-center"
+									onclick="submit()">
+									<img th:src="@{${'img/obras/' + obra.imagen}}" class="card-img"
+										alt="imagen de la obra">
+									<div class="card-img-overlay card-img-obra">
+										<h5 th:text="${obra.titulo}" class="card-title fs-6">Nombre
+											de la obra</h5>
+										<div class="card-subtitle fs-6 text-light">
+											<p class="card-text nomAutor m-0 small" th:each="artista : ${listaArtistas}"
+												th:if="${artista.codArtista == obra.codArtista}"
+												th:text="${artista.nombre}">Autor</p>
+											<!-- <p class="card-text m-0" th:text="${obra.fecha}" name="fecha">1800</p> -->
+										</div>
+									</div>
+									<input type="hidden" name="codObra" th:value="${obra.codObra}" />
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	<footer class="footer d-sm-flex justify-content-center mt-auto py-3" th:insert="/plantilla::footer"></footer>
+</body>
+
+</html>

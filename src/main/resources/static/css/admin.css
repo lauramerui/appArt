@@ -1,0 +1,90 @@
+/* pag principal panel */
+
+.div-est{
+	height: 100px;
+}
+
+/* tablas gestión */
+#tablaUsuarios img, #tablaObras img, #tablaCorrientes img, #tablaArtistas img{
+	height:60px;
+	width:60px;
+	object-fit: cover;
+}
+
+input[type="file"]{
+	display:none;
+}
+.btn-file{
+	cursor:pointer;
+	max-width:130px;
+}
+.celdaImg{
+	max-width: 81px;
+}
+#tablaObras .celdaImg label{
+	width:68px!important;
+}
+.btn-add{
+	max-width: 351px !important;
+	/* border: 0 !important; */
+}
+/* .btn-add:focus,.btn-add:active,.btn-add:focus-visible{
+	border: 0 !important;
+} */
+.btn-edit:hover{
+	color: green!important;
+	/* border: 0 !important; */
+}
+.btn-del:hover{
+	color:red !important;
+	/* border: 0 !important; */
+}
+.elipsis{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 300px;
+}
+/* formulario edit/new */
+#formEdit img{
+	height: 150px;
+	width:150px;
+	min-width: 150px;
+	object-fit: cover;
+	z-index: 1;
+}
+#formEdit input[type="file"]{
+	display: block;
+}
+#formEdit fieldset{
+	margin-top: -21px;
+    padding-top: 10px;
+    /* z-index: -1; */
+}
+
+.btn-pdf:hover{
+	text-decoration: underline;
+}
+
+
+/* lg */
+@media screen and (min-width: 992px) {
+	#formEdit{
+		width:80vw;
+	}
+	.div-est{
+		height: 130px;
+	}
+
+}
+
+@media print{
+	/* tabla usuarios */
+	header,footer,.breadcrumb,#tablaAlta,.dataTables_length,.dataTables_filter,.dataTables_paginate,.dataTables_info,.btn-pdf,.btn-add{
+		display:none;
+	}
+	table td:last-of-type,table th:last-of-type,table td:nth-last-of-type(2),table th:nth-last-of-type(2){
+		display: none;
+	}
+
+}

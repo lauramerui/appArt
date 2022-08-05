@@ -1,0 +1,47 @@
+.div-img img{
+	width:180px;
+	height: 180px;
+	object-fit: cover;
+}
+/* datos obra */
+.detalles{
+	min-width: 220px;
+	border:2px solid var(--azul) !important;
+	box-shadow: 4px 3px 8px 0px lightgray;
+  }
+  
+  .desc-text{
+	flex-shrink: 3;
+	column-count: 2;
+	column-width: 280px;
+	column-gap: 25px;
+	column-rule: 1px solid lightgray;
+  }
+  .ref-art{
+	color:var(--azul);
+	cursor:pointer;
+  }
+  .ref-art:hover{
+	text-decoration:underline
+  }
+
+
+/* md */
+@media screen and (min-width: 768px) {
+
+	.slider .card{
+		height: 190.53px !important;
+	}
+}
+
+@media screen and (min-width: 1200px) {
+
+	.catalogo .card, .slider .card{
+		height: 210.4px!important;
+	}
+}
+@media screen and (min-width: 1400px) {
+	.catalogo .card, .slider .card {
+		height: 246.4px!important;
+	}
+}

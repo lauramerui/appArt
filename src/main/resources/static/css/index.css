@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Artifika&family=Poppins&display=swap');
+@keyframes mueveFondo{
+	0%{background-position:top;}
+	100%{background-position:bottom;}
+}
+.cab-cont{
+    left:0;
+    width: 100%;
+}
+.cab-img{
+    height: calc(100vh - 75px);
+    background: #000;
+    background-size: cover !important;
+    background-position: center;
+    filter:brightness(0.3);
+    animation: mueveFondo 100s linear 0s infinite alternate;
+}
+.cab-det{
+    z-index: 0;
+    top:0;
+}
+
+.cab-det h1{
+    font-family: 'Artifika', serif;
+}
+#btnIniciar, .btn-link{
+    border:0;
+    background-color: transparent;
+    color:var(--celeste);
+    text-decoration: none;
+  }
+  #btnIniciar:hover, .btn-link:hover{
+    text-decoration: underline;
+    color:var(--celeste);
+  }
+.logo img{
+    height: 20vw!important;
+	width: 20vw!important;
+	max-width: 130px !important;;
+	max-height: 130px!important;
+    min-width: 31px !important;;
+	min-height: 31px!important;
+
+	object-fit: contain;
+}

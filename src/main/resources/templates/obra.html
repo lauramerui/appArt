@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es" class="h-100" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/jpg" href="/img/favicon.png"/>
+
+  <!--jquery-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- zoom -->
+  <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom/dist/panzoom.min.js"></script>
+  <!--BootStrap-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
+  <!-- 	validate -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+  <!-- estilos -->
+  <link rel="stylesheet" href="css/comun.css" />
+  <link rel="stylesheet" href="css/explorar.css" />
+  <link rel="stylesheet" href="css/obras.css" />
+  <link rel="stylesheet" href="../static/css/obras.css" />
+  <link rel="stylesheet" href="../static/css/comun.css" />
+  <!-- js -->
+  <script src="js/general.js"></script>
+  <script src="js/obras.js"></script>
+  <script src="js/validaForms.js"></script>
+  <script src="../static/js/obras.js"></script>
+
+  <title>Obra | Arty</title>
+</head>
+
+<body class="d-flex flex-column h-100">
+  <header th:insert="/plantilla::header"></header>
+  <main class="flex-shrink-0 mb-5">
+    <div class="container">
+      <!-- breadcrumb -->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="explorar">Explorar</a></li>
+        <li class="breadcrumb-item" active aria-current="page" th:text="${obraSelec.tituloObra}">
+          Obra
+        </li>
+      </ol>
+      <!-- contenido -->
+      <div class="">
+        <!-- imagen -->
+        <div class="d-flex flex-column align-items-center">
+          <div class="d-flex justify-content-center w-100">
+            <img th:src="@{${'img/obras/' + obraSelec.imagenObra}}" src="../static/img/obras/lafraguadevulcano.jpg"
+              class="img-fluid img-obra" alt="imagen de la obra seleccionada" id="panzoom" />
+          </div>
+          <!-- botones zoom -->
+          <div class="d-flex" id="btns-zoom">
+            <button type="submit" class="btn rounded-0" id="zoom-in">
+              <i class="bi bi-zoom-in"></i>
+            </button>
+            <button type="submit" class="btn rounded-0" id="zoom-reset" title="Reset zoom">
+              <i class="bi bi-aspect-ratio"></i>
+            </button>
+            <button type="submit" class="btn rounded-0" id="zoom-out">
+              <i class="bi bi-zoom-out"></i>
+            </button>
+          </div>
+        </div>
+
+
+        <!-- información -->
+        <div>
+          <!-- botones + titulo -->
+          <div class="d-sm-flex justify-content-between d-lg-block mt-md-3 mt-lg-0">
+            <!-- botones megusta + guardar -->
+            <div class="text-center order-sm-1" id="btns-like" th:if="${session.usuLogueado!=null}">
+              <!-- megusta -->
+              <form action="addFav" class="d-inline" onclick="submit()">
+                <button type="submit" class="btn btn-fav" title="Me gusta" th:disabled="${session.usuLogueado==null}">
+                  <i class="bi bi-heart" th:style="${existeMegusta ? 'display:none' : 'display:block'}"></i>
+                  <i class="bi bi-heart-fill" th:style="${existeMegusta ? 'display:block' : 'display:none'}"></i>
+                </button>
+                <input type="hidden" name="codObra" th:value="${obraSelec.codObra}" />
+              </form>
+              <!-- guardar -->
+              <div class="dropdown d-inline ">
+                <button type="submit" id="btnGuardar" title="Guardar en galería" class="btn btn-guardar dropdown-toggle"
+                  data-bs-toggle="dropdown" aria-expanded="false" th:disabled="${session.usuLogueado==null}">
+                  <i class="bi bi-save"></i>
+                  Guardar
+                </button>
+                <ul th:if="${listaGalerias !=null}" class="dropdown-menu" aria-labelledby="btnGuardar" >
+                  <li th:if="${listaGalerias !=null}" th:each="galeria : ${listaGalerias}">
+                    <a class="dropdown-item"
+                      th:href="@{addObraGaleria/{codGaleria}/{codObra}(codGaleria=${galeria.codGaleria},codObra=${obraSelec.codObra})}"
+                      th:text="${galeria.nombre}">Nombre galería
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- mensaje iniciar sesión -->
+            <div class="text-center text-sm-end text-lg-center text-secondary mb-2 order-sm-1"
+              th:if="${session.usuLogueado==null}" id="msgEntrar">
+              <button type="submit" id="btnIniciar" class="" data-bs-toggle="modal" data-bs-target="#login"
+                th:if="${session.usuLogueado==null}">Inicia sesión</button>
+              y guarda tus obras favoritas.
+            </div>
+            <hr class="d-block d-sm-none my-1" />
+            <div class="m-0">
+              <!-- título y autor -->
+              <div class="text-center text-sm-start">
+                <h1 class="fs-2 m-0" th:text="${obraSelec.tituloObra}">
+                  Título de la obra
+                </h1>
+                <h2 class="fs-4" th:text="${obraSelec.autorObra}">Autor</h2>
+              </div>
+            </div>
+          </div>
+
+          <!-- detalles + descripcion -->
+          <div class="d-flex flex-column flex-md-row mt-3">
+            <!--descripción -->
+            <div class="order-1 flex-shrink-3 mt-3 mt-md-0 me-md-5 descripcion">
+              <h4>Descripción</h4>
+              <div th:text="${obraSelec.descripcionObra}" class="desc-text">
+                Descripción de la obra
+              </div>
+            </div>
+            <!-- detalles -->
+            <div class="order-md-1">
+              <div class="detalles p-3 rounded">
+                <h3 class="fs-5 text-center">Detalles</h3>
+                <!-- <p class="m-0" th:text="${obraSelec.tituloObra}">Título</p> -->
+                <!-- <p class="m-0" th:text="${obraSelec.autorObra}">Autor</p> -->
+                <div class="d-flex flex-wrap  my-2">
+                  <span class="fw-bold me-2">Autor:</span>
+                  <form action="artista-obras" onclick="submit()">
+                    <p class="m-0 ref-obra" th:text="${obraSelec.autorObra}">Autor</p>
+                    <input type="hidden" name="codArt" th:value="${obraSelec.codArtista}" />
+                  </form>
+                </div>
+                <div class="d-flex flex-wrap  my-2">
+                  <span class="fw-bold me-2">Fecha:</span>
+                  <p class="m-0" th:text="${obraSelec.fechaObra}">Fecha</p>
+                </div>
+                <div class="d-flex flex-wrap  my-2">
+                  <span class="fw-bold me-2">Técnica:</span>
+                  <p class="m-0" th:text="${obraSelec.tecnicaObra}">Técnica</p>
+                </div>
+                <div class="d-flex flex-wrap  my-2">
+                  <span class="fw-bold me-2">Dimensión:</span>
+                  <p class="m-0" th:text="${obraSelec.dimensionObra}">Dimension</p>
+                </div>
+                <div class="d-flex flex-wrap  my-2">
+                  <span class="fw-bold me-2">Ubicación:</span>
+                  <p class="m-0" th:text="${obraSelec.ubicacionObra}">Ubicación</p>
+                </div>
+                <div class="d-flex flex-wrap ">
+                  <span class="fw-bold me-2">Corriente artística:</span>
+                  <form action="corriente-obras" class="" onclick="submit()">
+                    <p th:text="${obraSelec.corrienteObra}" class="ref-obra">corriente</p>
+                    <input type="hidden" name="codCorr" th:value="${obraSelec.codCorriente}" />
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="footer d-sm-flex justify-content-center mt-auto py-3" th:insert="/plantilla::footer"></footer>
+</body>
+
+</html>

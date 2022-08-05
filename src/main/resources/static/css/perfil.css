@@ -1,0 +1,13 @@
+figure img{
+	height: 40vw!important;
+	width: 40vw!important;
+	max-width: 200px !important;;
+	max-height: 200px!important;
+	
+	object-fit: cover;
+}
+@media screen and (min-width: 992px) {
+	.forms-perfil{
+		width:60vw;
+	}
+}

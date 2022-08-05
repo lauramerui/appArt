@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es" class="h-100" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/jpg" href="/img/favicon.png"/>
+
+	<!--BootStrap-->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+		crossorigin="anonymous"></script>
+	<!--jquery-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!-- masonry -->
+	<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js"></script>
+	<!-- 	validate -->
+	<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+	<!-- estilos -->
+	<link rel="stylesheet" href="css/comun.css">
+	<link rel="stylesheet" href="css/explorar.css">
+	<link rel="stylesheet" href="css/galerias.css">
+	<link rel="stylesheet" href="../static/css/explorar.css">
+	<link rel="stylesheet" href="../static/css/comun.css">
+	<link rel="stylesheet" href="../static/css/galerias.css">
+	<!-- js -->
+	<script src="js/general.js"></script>
+	<script src="js/explorar.js"></script>
+	<script src="js/galeria.js"></script>
+	<script src="js/validaForms.js"></script>
+	<script src="../static/js/galeria.js"></script>
+	<script src="../static/js/explorar.js"></script>
+
+	<title th:text="${galeria.nombre +' | Arty'}">Mi galeria | Arty</title>
+</head>
+
+<body class="d-flex flex-column h-100">
+	<header th:insert="/plantilla::header"></header>
+	<main class="flex-shrink-0 mb-5">
+		<div class="container">
+			<!-- breadcrumb -->
+			<ol class="breadcrumb mb-0">
+				<li class="breadcrumb-item"><a href="index">Inicio</a></li>
+				<li class="breadcrumb-item"><a href="/favoritos">Favoritos</a></li>
+				<li class="breadcrumb-item" active aria-current="page" th:text="${galeria.nombre}">Mi galeria</a>
+				</li>
+			</ol>
+			<h1 class="text-center" th:text="${galeria.nombre}">Nombre de mi galeria</h1>
+			<div class="text-center" th:text="${galeria.descripcion}">Descripcion de galeria</div>
+
+			<div id="migaleria" class="mt-3">
+				<div class="grid-container" id="listaObrasGaleria">
+					<div class="grid-sizer"></div>
+					<!-- <div class="gutter-sizer"></div> -->
+					<div class="grid-item" th:each="obra : ${obrasGaleria}">
+						<!-- botón borrar -->
+						<div class="info-grid-item">
+							<a th:href="@{obra-galeria/delete/{codGaleria}/{codObra}(codGaleria=${obra.codGaleria},codObra=${obra.codObra})}"
+								role="button" class="btn-del  fs-5 text-ligth" title="Eliminar">
+								<i class="bi bi-x"></i>
+							</a>
+							<form action="obra" class="d-flex h-100 align-items-end">
+								<button type="submit"
+									class="btn btn-outline-light btn-mas mb-1 ms-1 text-light">Info</button>
+								<input type="hidden" name="codObra" th:value="${obra.codObra}" />
+							</form>
+						</div>
+
+						<img class="" th:src="@{${'img/obras/' + obra.imagen}}"
+							src="../static/img/elnacimientodevenus.jpg" alt="imagen de obra galería">
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</main>
+	<footer class="footer d-sm-flex justify-content-center mt-auto py-3" th:insert="/plantilla::footer"></footer>
+</body>
+
+</html>
